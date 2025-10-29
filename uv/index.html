@@ -1,1 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ultraviolet Proxy</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #0e0e0e;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    input {
+      width: 300px;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      margin-right: 6px;
+    }
+    button {
+      background: crimson;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>Ultraviolet + Bare</h2>
+  <form id="uvForm">
+    <input id="urlInput" placeholder="https://example.com" required>
+    <button type="submit">Go</button>
+  </form>
+
+  <script src="uv.config.js"></script>
+  <script>
+    (async () => {
+      if ('serviceWorker' in navigator) {
+        await navigator.serviceWorker.register('uv.sw.js', { scope: __uv$config.prefix });
+      }
+
+      document.getElementById('uvForm').onsubmit = (e) => {
+        e.preventDefault();
+        const url = document.getElementById('urlInput').value.trim();
+        if (!url) return;
+        const encoded = btoa(url);
+        location.href = __uv$config.prefix + encoded;
+      };
+    })();
+  </script>
+</body>
+</html>
 
